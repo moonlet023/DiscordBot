@@ -75,6 +75,32 @@ class Music(commands.Cog):
 
                 await self.song_queue.put((audio_url, title, ctx))
                 await ctx.send(f"Added to queue: {title}")
+    @commands.command()
+    async def listplay(self, ctx, *, listname: str):
+        file_path = f"./songlists/{listname}.json"
+        if not os.path.exists(file_path):
+            return await ctx.send(f"Song list '{listname}' does not exist.")
+        with open(file_path, 'r', encoding='utf-8') as f:
+            import json
+            song_list = json.load(f)
+        if not song_list["songs"]:
+            await ctx.send(f"Song list '{listname}' is empty.")
+        else:
+            for song in song_list["songs"]:
+                ydl_opts = {
+                    'format': 'bestaudio/best',
+                    'quiet': True,
+                    'no_warnings': True,
+                    'default_search': 'auto',
+                    'source_address': '0.0.0.0'
+                }
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    info = ydl.extract_info(song, download=False)
+                    audio_url = info['url']
+                    title = info.get('title', 'Unknown Title')
+                await self.song_queue.put((audio_url, title, ctx))
+                await ctx.send(f"Added to queue: {title}")
+                
 
     # loop music command
     @commands.command()
