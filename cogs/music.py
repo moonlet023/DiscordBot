@@ -6,9 +6,6 @@ from discord.ext import tasks
 import yt_dlp
 import asyncio
 
-
-
-
 class Music(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -25,6 +22,51 @@ class Music(commands.Cog):
     voice_clients = {}  # Dictionary to keep track of voice clients
     current_voice_client = None
     volume = 0.5  # Default volume level
+    
+    @commands.command()
+    async def musicHelp(self, ctx, len: str):
+        help_message_en = (
+            "Music Commands:\n"
+            "`!join` - Join your voice channel\n"
+            "`!leave` - Leave the voice channel\n"
+            "`!play <url>` - Play a song from a URL\n"
+            "`!loop` - Toggle looping of the current song\n"
+            "`!stop` - Stop the current song\n"
+            "`!volume <level>` - Set the volume (0-100)\n"
+            "`!clean` - Clear the song queue\n"
+            "`!list_songs` - List all songs in the queue\n"
+            "`!listCreate` - Create a song list\n"
+            "`!listAdd <list_name> <url>` - Add a song to a song list\n"
+            "`!listShow <list_name>` - Show songs in a song list\n"
+            "`!listplay <listname>` - Play songs from a song list\n"
+            "`!listDelete <list_name>` - Delete a song list\n"
+            )
+        help_message_zh = (
+            "音樂指令:\n"
+            "`!join` - 加入你的語音頻道\n"
+            "`!leave` - 離開語音頻道\n"
+            "`!play <url>` - 播放歌曲\n"
+            "`!loop` - 切換當前歌曲循環播放\n"
+            "`!stop` - 停止當前歌曲\n"
+            "`!volume <level>` - 設置音量 (0-100)\n"
+            "`!clean` - 清空歌曲隊列\n"
+            "`!list_songs` - 列出所有歌曲\n"
+            "`!listCreate` - 創建歌曲列表\n"
+            "`!listAdd <list_name> <url>` - 向歌曲列表添加歌曲\n"
+            "`!listShow <list_name>` - 顯示歌曲列表中的歌曲\n"
+            "`!listplay <listname>` - 播放歌曲列表中的歌曲\n"
+            "`!listDelete <list_name>` - 刪除歌曲列表\n"
+            )
+        
+        if len == "en":
+            await ctx.send(help_message_en)
+        elif len == "zh":
+            await ctx.send(help_message_zh)
+        elif len == None:
+            await ctx.send(help_message_en)
+        else:
+            await ctx.send(help_message_en)
+            
         
     # join voice channel command
     @commands.command()

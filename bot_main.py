@@ -31,7 +31,8 @@ async def on_ready():
         if filename.endswith(".py"):
             await bot.load_extension(f"cogs.{filename[:-3]}")
             print(f"load {filename} ")
-    slash = await bot.tree.sync()
+    guild = discord.Object(id=1392733155898818652)
+    slash = await bot.tree.sync(guild=guild)
     print(f"load {len(slash)} slash commands")
     # give bot link
 
@@ -75,6 +76,14 @@ async def sync(ctx):
         return await ctx.send("you can't use this command here.")
     synced = await bot.tree.sync()
     await ctx.send(f" {len(synced)} slash commands synced.")
+
+@bot.command()
+async def unsync(ctx):
+    if ctx.channel.id != 1393517373474209902:
+        return await ctx.send("you can't use this command here.")
+    bot.tree.clear_commands(guild=None)  # 清空全域指令
+    await bot.tree.sync()
+    await ctx.send("All global slash commands have been unregistered.")
 
     
 bot.run(tocken)
